@@ -52,4 +52,10 @@ class Country {
             return currency.name;
         });
     }
+
+    get getLanguages(){
+        return this.languages.map(language => {
+            return language.name;
+        });
+    }
 }
