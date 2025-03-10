@@ -2,7 +2,7 @@ import {countries} from "./countries.js";
 
 class Currency{
 
-    static currencies = [];
+    static all_currencies = [];
 
     constructor(code, name, symbol){
         this.code = code;
@@ -17,7 +17,7 @@ class Currency{
 
     fill_currencies(){
         countries.forEach(element => {
-            Currency.currencies.push(new Currency(element["currencies"]["code"], element["currencies"]["name"], element["currencies"]["symbol"]));
+            all_currencies[element["currencies"][0]["code"]] = new Currency(element["currencies"][0]["code"], element["currencies"][0]["name"], element["currencies"][0]["symbol"]);
         });
     }
 }
