@@ -32,7 +32,7 @@ class Country {
                 element["area"],
                 element["borders"],
                 new Currency(element["currencies"].code, element["currencies"].name, element["currencies"].symbol),
-                new languages(element["languages"].iso639_2, element["languages"].name)
+                new Language(element["languages"].iso639_2, element["languages"].name)
             );
         });
     }

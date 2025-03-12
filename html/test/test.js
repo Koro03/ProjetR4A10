@@ -17,7 +17,7 @@ function outsideTheContinent() {
                     tabPaysFrontalierHorsContinent.push(element)
                 }
                 if (!tabPaysFrontalierHorsContinent.includes(element2)) {
-                    
+
                     tabPaysFrontalierHorsContinent.push(element2)
                 }
 
@@ -25,6 +25,8 @@ function outsideTheContinent() {
         });
     });
 
+    console.log("fonction outsideTheContinent");
+    console.log(tabPaysFrontalierHorsContinent);
     return tabPaysFrontalierHorsContinent
 }
 

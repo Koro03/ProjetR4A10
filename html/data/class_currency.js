@@ -17,7 +17,11 @@ class Currency{
 
     static fill_currencies(){
         countries.forEach(element => {
-            all_currencies[element["currencies"][0]["code"]] = new Currency(element["currencies"][0]["code"], element["currencies"][0]["name"], element["currencies"][0]["symbol"]);
+            Currency.all_currencies[element["currencies"][0]["code"]] = new Currency(
+                element["currencies"][0]["code"],
+                element["currencies"][0]["name"],
+                element["currencies"][0]["symbol"]
+            );
         });
     }
 }
