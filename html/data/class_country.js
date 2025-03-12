@@ -1,6 +1,5 @@
-import {countries} from './countries.js';
-import {Currency} from './class_currency.js';
-import {Language} from './class_language.js';
+import countries from './countries.js';
+
 
 class Country {
 
@@ -56,3 +55,5 @@ class Country {
         return this.languages;
     }
 }
+
+export default Country

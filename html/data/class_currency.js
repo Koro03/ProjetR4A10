@@ -1,4 +1,4 @@
-import {countries} from "./countries.js";
+import countries from "./countries.js";
 
 class Currency{
 
@@ -25,3 +25,5 @@ class Currency{
         });
     }
 }
+
+export default Currency
