@@ -1,4 +1,6 @@
-import countries from './countries.js';
+import countries  from "./countries.js";
+import Currency from './class_currency.js';
+import Language from './class_language.js';
 
 class Country {
 
@@ -21,18 +23,22 @@ class Country {
     }
 
     static fill_countries(){
-        countries.forEach(element => {
-            Country.all_countries[element["alapha3code"]] = new Country(
-                element["alpha3code"],
-                element["name"],
-                element["capital"],
-                element["subregion"],
-                element["population"],
-                element["area"],
-                element["borders"],
-                new Currency(element["currencies"].code, element["currencies"].name, element["currencies"].symbol),
-                new Language(element["languages"].iso639_2, element["languages"].name)
-            );
+        countries.forEach(country => {
+            if(country.currencies){
+                Country.all_countries.push(new Country(
+                    country.alpha3Code,
+                    country.name,
+                    country.capital,
+                    country.subregion,
+                    country.population,
+                    country.area,
+                    country.borders,
+                    country.currencies.map(currency => new Currency(currency.code, currency.name, currency.symbol)),              
+                    country.languages.map(language => new Language(language.iso639_2, language.name))
+                ));
+            }else{
+                country.currencies = [];
+            }
         });
     }
 
@@ -54,5 +60,9 @@ class Country {
         return this.languages;
     }
 }
+
+
+Country.fill_countries();
+console.log(Country.all_countries);
 
 export default Country
