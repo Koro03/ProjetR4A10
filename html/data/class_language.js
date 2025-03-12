@@ -1,35 +1,27 @@
-import { countries } from "./countries.js";
+import  countries  from "./countries.js";
 
 class Language {
-
-    constructor(iso_639_2,name) {
-        this.all_languages = []
+    constructor(iso_639_2, name) {
         this.name = name;
-        this.iso_639_2 = iso_639_2;
+        this.iso639_2 = iso_639_2;
     }
+
     toString() {
-        return this.name +"(" + this.iso_639_2 + ")"
+        return this.name + " (" + this.iso639_2 + ")";
     }
+
+    static all_languages = [];
+
     static fill_languages() {
-        /*for (let index = 0; index < countries[languages].length; index++) {
-            const element = array[index];
-            
-        }*/
-
-        countries.forEach(element => {
-            element["languages"].forEach(element => {
-                this.all_languages.push(new Language(element["name"],element["iso_639_2"]))
-
+        countries.forEach(country => {
+            country.languages.forEach(lang => {
+                Language.all_languages.push(new Language(lang.iso639_2, lang.name));
             });
         });
     }
 }
 
-const countriesLanguages = Language().fill_languages;
+Language.fill_languages();
 
+console.log(Language.all_languages);
 
-
-
-
-
- 
