@@ -22,8 +22,8 @@ class Country {
 
     static fill_countries(){
         countries.forEach(element => {
-            this.all_countries[element["alapha3code"]] = new Country(
-                element["alapha3code"],
+            Country.all_countries[element["alapha3code"]] = new Country(
+                element["alpha3code"],
                 element["name"],
                 element["capital"],
                 element["subregion"],
