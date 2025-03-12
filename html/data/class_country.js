@@ -48,14 +48,10 @@ class Country {
     }
 
     get getCurrencies(){
-        return this.currencies.map(currency => {
-            return currency.name;
-        });
+        return this.currencies;
     }
 
     get getLanguages(){
-        return this.languages.map(language => {
-            return language.name;
-        });
+        return this.languages;
     }
 }
