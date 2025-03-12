@@ -1,11 +1,9 @@
-import countries  from "../data/countries.js";
-
 import Country from "../data/class_country.js";
 import Currency from "../data/class_currency.js";
 import Language from "../data/class_language.js";
 
 function outsideTheContinent() {
-    Country.fill_countries();
+    Country.fill_countries;
     let tabPaysFrontalierHorsContinent = [];
     const all_countries = Country.all_countries;
     all_countries.forEach(element => {

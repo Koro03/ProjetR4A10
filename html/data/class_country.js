@@ -1,6 +1,5 @@
 import countries from './countries.js';
 
-
 class Country {
 
     static all_countries = [];
