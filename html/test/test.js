@@ -22,7 +22,7 @@ function outsideTheContinent() {
             }
         });
     });
-
+    console.log(all_countries);
     console.log("fonction outsideTheContinent");
     console.log(tabPaysFrontalierHorsContinent);
     return tabPaysFrontalierHorsContinent
