@@ -1,4 +1,8 @@
-import { countries } from "../data/countries.js";
+import countries  from "../data/countries.js";
+
+import Country from "../data/class_country.js";
+import Currency from "../data/class_currency.js";
+import Language from "../data/class_language.js";
 
 function outsideTheContinent() {
     Country.fill_countries
@@ -28,7 +32,8 @@ function moreNeighbors() {
     let tabMaxDeVoisin = []
     const all_countries = Country.all_countries
     // recup tout les voisin sort dans l'ordre décroissant
-    all_countries.forEach(element => {
-        
-    });
+    console.log(all_countries)
 }
+
+document.getElementById("btnOutsideContinent").addEventListener("click", outsideTheContinent);
+document.getElementById("btnMoreNeighbors").addEventListener("click", moreNeighbors);

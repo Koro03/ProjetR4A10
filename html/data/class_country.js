@@ -1,4 +1,4 @@
-import {countries} from './countries.js';
+import countries from './countries.js';
 
 
 class Country {
@@ -55,3 +55,5 @@ class Country {
         return this.languages;
     }
 }
+
+export default Country
