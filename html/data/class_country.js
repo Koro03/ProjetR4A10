@@ -1,4 +1,6 @@
 import countries from './countries.js';
+import Currency from "../data/class_currency.js";
+import Language from "../data/class_language.js";
 
 class Country {
 
