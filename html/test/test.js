@@ -1,7 +1,10 @@
-import { countries } from "../data/countries.js";
+import Country from "../data/class_country.js";
+import Currency from "../data/class_currency.js";
+import Language from "../data/class_language.js";
+
 
 function outsideTheContinent() {
-    Country.fill_countries
+    Country.fill_countries();
     let tabPaysFrontalierHorsContinent = [];
     const all_countries = Country.all_countries;
     all_countries.forEach(element => {
@@ -13,7 +16,7 @@ function outsideTheContinent() {
                     tabPaysFrontalierHorsContinent.push(element)
                 }
                 if (!tabPaysFrontalierHorsContinent.includes(element2)) {
-                    
+
                     tabPaysFrontalierHorsContinent.push(element2)
                 }
 
@@ -21,6 +24,8 @@ function outsideTheContinent() {
         });
     });
 
+    console.log("fonction outsideTheContinent");
+    console.log(tabPaysFrontalierHorsContinent);
     return tabPaysFrontalierHorsContinent
 }
 
@@ -32,3 +37,9 @@ function moreNeighbors() {
         
     });
 }
+
+
+
+// Attacher les fonctions à l'objet window pour les rendre globales
+document.getElementById('outsideTheContinentBtn').addEventListener('click', outsideTheContinent);
+document.getElementById('moreNeighborsBtn').addEventListener('click', moreNeighbors);
