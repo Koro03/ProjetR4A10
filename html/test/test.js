@@ -98,12 +98,14 @@ function neighborsLess() {
     const all_countries = Country.all_countries
     // recup tout les voisin sort dans l'ordre décroissant
     all_countries.forEach(country => {
-        if((country.subregion).length() == 0){
-            listePaysSansVoisin.push(country)
+        if(country.getBorders.length == 0){
+            listePaysSansVoisin.push(country);
         }
-        
     });
 }
+
+
+
 function withCommonLanguage() {
     let listeSansLangueCommuneAvecSesVoisins = []
     const all_countries = Country.all_countries
