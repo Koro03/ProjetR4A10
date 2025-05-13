@@ -19,6 +19,10 @@ class Language {
             });
         });
     }
+
+    get getName() {
+        return this.name;
+    }
 }
 
 Language.fill_languages();

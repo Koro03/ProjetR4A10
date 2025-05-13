@@ -6,7 +6,7 @@ class Country {
 
     static all_countries = [];
 
-    constructor(alphaCode, name, capital, subregion, population, area, bordersArray, currenciesArray, languageArray){
+    constructor(alphaCode, name, capital, subregion, population, area, bordersArray, currenciesArray, languageArray, topLevelDomain){
         this.alpha3Code = alphaCode;
         this.name = name;
         this.capitale = capital;
@@ -14,6 +14,7 @@ class Country {
         this.population = population;
         this.area = area;
         this.borders = bordersArray;
+        this.topLevelDomain = topLevelDomain;
         this.currencies = currenciesArray;
         this.languages = languageArray;
     }
@@ -33,6 +34,7 @@ class Country {
                     country.population,
                     country.area,
                     country.borders,
+                    country.topLevelDomain,
                     country.currencies.map(currency => new Currency(currency.code, currency.name, currency.symbol)),              
                     country.languages.map(language => new Language(language.iso639_2, language.name))
                 ));
@@ -62,9 +64,12 @@ class Country {
     get getLanguages(){
         return this.languages;
     }
+
+    get getTopLevelDomain(){
+        return this.topLevelDomain;
+    }
 }
 
 
 Country.fill_countries();
-
 export default Country
