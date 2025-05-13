@@ -46,10 +46,13 @@ class Country {
         return this.population / this.area; 
     }
 
-    get getBorders(){
-       return this.borders.map(border => {
-           return Country.all_countries[border].name;
-       });
+    get getBorders() {
+        if (!this.borders || this.borders.length === 0) {
+            return [];
+        }
+        return this.borders.map(border => {
+            return Country.all_countries.find(country => country.alpha3Code === border);
+        }).filter(country => country);
     }
 
     get getCurrencies(){
