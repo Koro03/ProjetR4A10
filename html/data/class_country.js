@@ -69,6 +69,5 @@ class Country {
 
 
 Country.fill_countries();
-console.log(Country.all_countries);
 
 export default Country
