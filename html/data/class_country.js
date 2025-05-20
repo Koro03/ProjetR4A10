@@ -6,7 +6,7 @@ class Country {
 
     static all_countries = [];
 
-    constructor(alphaCode, name, capital, subregion, population, area, bordersArray, currenciesArray, languageArray, topLevelDomain){
+    constructor(alphaCode, name, capital, subregion, population, area, bordersArray, topLevelDomain, currenciesArray, languageArray ){
         this.alpha3Code = alphaCode;
         this.name = name;
         this.capitale = capital;
