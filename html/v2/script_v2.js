@@ -59,19 +59,19 @@ function createTd(tr,elementInfo) {
     }else{
         td5.innerText = elementInfo.subregion;
     }
-    /* Drapeau
-    
-    let td6 = document.createElement("td") 
-    td6.innerText(elementInfo.name);
-    
-    */
+    let td6 = document.createElement("td");
+    if (elementInfo.flags === undefined ||elementInfo.flags === NaN || elementInfo.flags === 0) {
+        td6.innerHTML = "N/A";
+    }else{
+        td6.innerHTML = `<img src="${elementInfo.flags.svg}" alt="flags">`;
+    }
  
     tr.appendChild(td1)
     tr.appendChild(td2)
     tr.appendChild(td3)
     tr.appendChild(td4)
     tr.appendChild(td5)
-    //tr.appendChild(td6)
+    tr.appendChild(td6)
 }
 
 function renderTable(startItem,numberItem){

@@ -6,7 +6,7 @@ class Country {
 
     static all_countries = [];
 
-    constructor(alphaCode, name, capital, subregion, population, area, bordersArray, topLevelDomain, currenciesArray, languageArray ){
+    constructor(alphaCode, name, capital, subregion, population, area, bordersArray, topLevelDomain, currenciesArray, languageArray, flags){
         this.alpha3Code = alphaCode;
         this.name = name;
         this.capitale = capital;
@@ -17,6 +17,7 @@ class Country {
         this.topLevelDomain = topLevelDomain;
         this.currencies = currenciesArray;
         this.languages = languageArray;
+        this.flags = flags;
     }
 
     toString(){
@@ -36,7 +37,8 @@ class Country {
                     country.borders,
                     country.topLevelDomain,
                     country.currencies.map(currency => new Currency(currency.code, currency.name, currency.symbol)),              
-                    country.languages.map(language => new Language(language.iso639_2, language.name))
+                    country.languages.map(language => new Language(language.iso639_2, language.name)),
+                    country.flags,
                 ));
             }else{
                 country.currencies = [];
@@ -67,6 +69,10 @@ class Country {
 
     get getTopLevelDomain(){
         return this.topLevelDomain;
+    }
+
+    get getFlags(){
+        return this.flags.svg;
     }
 }
 
