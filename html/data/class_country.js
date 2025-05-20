@@ -65,4 +65,6 @@ class Country {
 }
 
 
+Country.fill_countries();
+
 export default Country

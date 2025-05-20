@@ -16,14 +16,19 @@ class Currency{
 
 
     static fill_currencies(){
-        countries.forEach(element => {
-            Currency.all_currencies[element["currencies"][0]["code"]] = new Currency(
-                element["currencies"][0]["code"],
-                element["currencies"][0]["name"],
-                element["currencies"][0]["symbol"]
-            );
+        countries.forEach(country => {
+            if (country.currencies) {
+                country.currencies.forEach(currency => {
+                    Currency.all_currencies.push(new Currency(currency.code, currency.name, currency.symbol));
+                });
+            }
         });
     }
 }
+
+
+Currency.fill_currencies();
+
+console.log(Currency.all_currencies);
 
 export default Currency

@@ -1,4 +1,4 @@
-import  countries  from "./countries.js";
+import countries  from "./countries.js";
 
 class Language {
     constructor(iso_639_2, name) {
