@@ -25,15 +25,41 @@ function createTr(all_countries) {
  */
 function createTd(tr,elementInfo) {
     let td1 = document.createElement("td") 
-    td1.innerText = elementInfo.name;
+    if (elementInfo.name === undefined ||elementInfo.name === NaN || elementInfo.name === 0  ) {
+        td1.innerText = "N/A";
+    }else{
+        td1.innerText = elementInfo.name;
+    }
+
     let td2 = document.createElement("td") 
-    td2.innerText = elementInfo.population;
+    if (elementInfo.population === undefined ||elementInfo.population === NaN || elementInfo.population === 0) {
+        td2.innerText = "N/A";
+    }else{
+
+        td2.innerText = elementInfo.population;
+    }
+
     let td3 = document.createElement("td") 
-    td3.innerText = elementInfo.area;
+    if (elementInfo.area === undefined ||elementInfo.area === NaN || elementInfo.area === 0) {
+        td3.innerText = "N/A";
+    }else{
+        td3.innerText = elementInfo.area;
+    }
     let td4 = document.createElement("td") 
-    td4.innerText = elementInfo.subregion;
+    if (elementInfo.getPopDensity === undefined ||elementInfo.getPopDensity === NaN || elementInfo.getPopDensity === 0) {
+        td4.innerText = "N/A";
+    }else{
+
+        td4.innerText = elementInfo.getPopDensity;
+    }
     let td5 = document.createElement("td") 
-    td5.innerText = elementInfo.getPopDensity;
+    if (elementInfo.subregion === undefined ||elementInfo.subregion === NaN || elementInfo.subregion === 0) {
+        td5.innerText = "N/A";     
+    }else{
+        td5.innerText = elementInfo.subregion;
+    }
+
+    
     
     /* Drapeau
     
