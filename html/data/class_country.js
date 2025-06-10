@@ -25,6 +25,10 @@ class Country {
     }
 
     static fill_countries(){
+        //Evite les doublons
+        if (Country.all_countries.length > 0) return;
+
+        //Remplissage de la liste des pays
         countries.forEach(country => {
             if(country.currencies){
                 Country.all_countries.push(new Country(

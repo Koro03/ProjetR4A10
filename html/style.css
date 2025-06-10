@@ -18,6 +18,11 @@
 .styled-table td {
   padding: 12px 15px;
   border-bottom: 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
+}
+
+.styled-table thead:hover {
+  cursor: pointer;
 }
 
 .styled-table tbody tr {

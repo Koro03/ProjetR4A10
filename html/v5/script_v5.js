@@ -85,7 +85,6 @@ function createTd(tr,elementInfo) {
 }
 
 function renderTable(startItem,numberItem){
-
     let tbody = document.querySelector("tbody")
     tbody.innerHTML = ""
     createTr(all_countries.slice(startItem,numberItem))
@@ -123,14 +122,12 @@ renderTable(startItem,numberItem)
 /**
  * Fonction d'affichage des détails d'un pays
  * @param {*} country 
- * @returns un element html contenant les détails du pays
+ * @returns une div contenant les détails du pays
  */
 
 function createCountryDetails(country) {
-    console.log(country);
     //Supprimer les dbalise deja présentes
     document.querySelectorAll('.country-details-modal').forEach(e => e.remove());
-    
     
     //Création de la div détails
     let div = document.createElement("div");
@@ -145,7 +142,6 @@ function createCountryDetails(country) {
             <p>Money : ${country.currencies}</p>
             <p>Languages : ${country.languages}</p>
         </div>
-        
     `;
 
     let closeButton = div.querySelector(".country-details-close");
@@ -154,34 +150,66 @@ function createCountryDetails(country) {
 }
 
 
-
 /**
  * Ajout d'ecouteur sur les en-tete du tableau
  */
-document.querySelectorAll("td").forEach((element) => {
+document.querySelectorAll("th").forEach((element) => {
     element.addEventListener("click", () => {
-        let selection = element.innerText;
         //Appel de la fonction de tri
-        tri(selection);
+        tri(element);
     });
 });
 
 /**
- * Fonction de tri du tableau
- * @param {*} selection
+ * Cette fonction trie le tableau all_countries en fonction du critère sélectionné
+ * @param {*} selection // Le critère de tri sélectionné par l'utilisateur
+ * @returns all_countries trié
  */
+function tri(element) {
+    let selection = element.innerText;
 
-function tri(selection) {
+    // Réinitialiser le style de tous les th
+    let ths = document.querySelectorAll("th");
+    ths.forEach((el) => {
+        el.style.fontWeight = "normal";
+    });
+
+    //Tri en fonction de la sélection
     if (selection === "Nom en français") {
         all_countries.sort((a, b) => a.name.localeCompare(b.name));
+        element.style.fontWeight = "900";
     }else if(selection === "Population") {
-        all_countries.sort((a, b) => a.population - b.population);
+        all_countries.sort((a, b) => {
+            if(a.population === b.population){
+                return a.name.localeCompare(b.name); // Si les populations sont égales, trier par nom
+            }
+            return a.population - b.population;
+        });
+        element.style.fontWeight = "900";
     }else if (selection === "Surface") {
-        all_countries.sort((a, b) => a.area - b.area);
+        all_countries.sort((a, b) => {
+            if(a.area === b.area){
+                return a.name.localeCompare(b.name); // Si les surfaces sont égales, trier par nom
+            }
+            return a.area - b.area;
+        });
+        element.style.fontWeight = "900";
     }else if (selection === "Densité de population") {
-        all_countries.sort((a, b) => a.getPopDensity - b.getPopDensity);
+        all_countries.sort((a, b) => {
+            if(a.getPopDensity === b.getPopDensity){
+                return a.name.localeCompare(b.name); // Si les densités sont égales, trier par nom
+            }
+            return a.getPopDensity - b.getPopDensity;
+        });
+        element.style.fontWeight = "900";
     }else if (selection === "Continent et appartenance") {
-        all_countries.sort((a, b) => a.subregion.localeCompare(b.subregion));
+        all_countries.sort((a, b) => {
+            if(a.subregion === b.subregion){
+                return a.name.localeCompare(b.name); // Si les sous-régions sont égales, trier par nom
+            }
+            return a.subregion.localeCompare(b.subregion);
+        });
+        element.style.fontWeight = "900";
     }
-    renderTable(startItem,numberItem);
+    renderTable(startItem, numberItem);
 }

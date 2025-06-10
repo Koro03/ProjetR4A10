@@ -26,7 +26,4 @@ class Language {
 }
 
 Language.fill_languages();
-
-console.log(Language.all_languages);
-
 export default Language
