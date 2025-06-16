@@ -29,6 +29,6 @@ class Currency{
 
 Currency.fill_currencies();
 
-console.log(Currency.all_currencies);
+//console.log(Currency.all_currencies);
 
 export default Currency
