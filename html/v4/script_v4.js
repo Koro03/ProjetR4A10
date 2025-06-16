@@ -35,9 +35,14 @@ function createTr(all_countries) {
     const tbody = document.querySelector("tbody")
     all_countries.forEach(element => {
         let tr = document.createElement("tr");
-        createTd(tr,element)
-        tbody.appendChild(tr)
+        createTd(tr,element);
 
+        //Ajout d'un ecouteur sur chaque tr
+        tr.addEventListener("click", () => {
+            // Créer les détails du pays
+            createCountryDetails(element);
+        });
+        tbody.appendChild(tr);
     });
 }
 /**
@@ -46,7 +51,8 @@ function createTr(all_countries) {
  * @param {*} elementInfo 
  */
 function createTd(tr,elementInfo) {
-    let td1 = document.createElement("td") 
+    let td1 = document.createElement("td") ;
+    td1.id = "nom";
     if (elementInfo.name === undefined ||elementInfo.name === NaN || elementInfo.name === 0  ) {
         td1.innerText = "N/A";
     }else{
@@ -82,19 +88,24 @@ function createTd(tr,elementInfo) {
     }else{
         td5.innerText = elementInfo.subregion;
     }
-    /* Drapeau
     
-    let td6 = document.createElement("td") 
-    td6.innerText(elementInfo.name);
+    let td6 = document.createElement("td");
+    if (elementInfo.flags === undefined ||elementInfo.flags === NaN || elementInfo.flags === 0) {
+        td6.innerHTML = "N/A";
+    }else{
+        td6.innerHTML = `<img src="${elementInfo.flags.svg}" alt="flags">`;
+        td6.addEventListener("click", () => {
+            window.open(elementInfo.flags.svg, "_blank");
+        });
+    }
     
-    */
  
     tr.appendChild(td1)
     tr.appendChild(td2)
     tr.appendChild(td3)
     tr.appendChild(td4)
     tr.appendChild(td5)
-    //tr.appendChild(td6)
+    tr.appendChild(td6)
 }
 
 function renderTable(startItem,numberItem,data){
@@ -131,8 +142,37 @@ buttonPrev.addEventListener("click",()=>{
 
 renderTable(startItem,numberItem,all_countries)
 
-console.log(all_countries)
+/**
+ * Fonction d'affichage des détails d'un pays
+ * @param {*} country 
+ * @returns un element html contenant les détails du pays
+ */
 
+function createCountryDetails(country) {
+    //Supprimer les dbalise deja présentes
+    document.querySelectorAll('.country-details-modal').forEach(e => e.remove());
+    
+    
+    //Création de la div détails
+    let div = document.createElement("div");
+    div.classList.add("country-details-modal");
+    div.innerHTML = `
+        <div class="country-details-top">
+            <h2>${country.name}</h2>
+            <button class="country-details-close" title="Fermer">×</button>
+        </div>
+        <div class="country-details-content">
+            <p>Capital : ${country.capitale}</p>
+            <p>Money : ${country.currencies}</p>
+            <p>Languages : ${country.languages}</p>
+        </div>
+        
+    `;
+
+    let closeButton = div.querySelector(".country-details-close");
+    closeButton.addEventListener("click", () => div.remove());
+    document.body.appendChild(div);
+}
 
 function createAllLanguageFilter() {
     const selectLanguageFilter = document.querySelector("#langueFilter");
@@ -196,7 +236,6 @@ function optionForSelect(value) {
     option.text = value
     return option
 }
-console.log(all_continent)
 createAllLanguageFilter()
 createAllContinent()
 createAllPaysFilter()

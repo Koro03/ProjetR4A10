@@ -19,10 +19,11 @@ class Language {
             });
         });
     }
+
+    get getName() {
+        return this.name;
+    }
 }
 
 Language.fill_languages();
-
-//console.log(Language.all_languages);
-
 export default Language

@@ -71,31 +71,99 @@ function withCommonLanguage() {
     const all_countries = Country.all_countries;
     let tabCommonLanguage = [];
 
+    //parcours de tous les pays
+    all_countries.forEach(element => {
+
+        //récupération des pays voisins
+        let border = element.getBorders;
+        //récupération des langues
+        let languages = element.getLanguages;
+
+        //pour chaque pays voisins
+        border.forEach(borderCountry => {
+            let borderLanguages = borderCountry.getLanguages;
+
+            // Vérifier si les deux pays partagent une langue commune
+            let commonLanguages = languages.filter(lang => borderLanguages.includes(lang));
+            if (commonLanguages.length > 0) {
+                tabCommonLanguage.push({
+                    Country1: element,
+                    Country2: borderCountry,
+                    CommonLanguages: languages.filter(lang => borderLanguages.includes(lang))
+                });
+            }
+        });
+    });
+    console.log(tabCommonLanguage);
+    return tabCommonLanguage;
+}
+
+
+
+function withoutCommonCurrency() {
+    const all_countries = Country.all_countries;
+    let tabCommonCurrency = [];
+
     all_countries.forEach(element => {
         let border = element.getBorders;
-        let languages = element.getLanguages;
+        let elementCurrency = element.getCurrencies;
+
         border.forEach(element2 => {
-            let commonLanguage = element2.getLanguages;
-            if (commonLanguage.some(lang => element2.getLanguages.some(lang2 => lang === lang2))) {
-                if (!tabCommonLanguage.includes(element)) {
-                    tabCommonLanguage.push({
+            let element2Currency = element2.getCurrencies;
+            if (elementCurrency.some(curr => element2.getCurrencies.some(curr2 => curr === curr2))) {
+                if (!tabCommonCurrency.includes(element)) {
+                    tabCommonCurrency.push({
                         Country1 : element,
                         Country2 : element2,
-                        CommonLanguage : element.getLanguages
+                        CommonCurrency : element.getCurrencies
                     });
                 }
             }
         });
     });
-
-    console.log(tabCommonLanguage);
-    return tabCommonLanguage;
+    console.log(tabCommonCurrency);
+    return tabCommonCurrency;
 }
 
+
+function sortingDecreasingDensity() {
+    const all_countries = Country.all_countries;
+    let tabDensity = [];
+
+    all_countries.forEach(element => {
+        tabDensity.push({
+            country : element, 
+            density : element.getPopDensity
+        });
+    });
+    tabDensity.sort((a, b) => b.density - a.density);
+    console.log(tabDensity);
+    return tabDensity;
+}
+
+
+function moreTopLevelDomains() {
+    const all_countries = Country.all_countries;
+    let tabTopLevelDomains = [];
+
+    all_countries.forEach(element => {
+        let topLevelDomain = element.getTopLevelDomain;
+        if (topLevelDomain) {
+            tabTopLevelDomains.push(topLevelDomain);
+        }
+    });
+
+    console.log(tabTopLevelDomains);
+    return tabTopLevelDomains;
+}
 
 document.getElementById("btnOutsideContinent").addEventListener("click", outsideTheContinent);
 document.getElementById("btnMoreNeighbors").addEventListener("click", moreNeighbors);
 document.getElementById("neighborlessBtn").addEventListener("click", neighborsLess);
 document.getElementById("moreLanguagesBtn").addEventListener("click", moreLanguages);
 document.getElementById("withCommonLanguageBtn").addEventListener("click", withCommonLanguage);
+document.getElementById("withoutCommonCurrencyBtn").addEventListener("click", withoutCommonCurrency);
+document.getElementById("sortingDecreasingDensityBtn").addEventListener("click", sortingDecreasingDensity);
+document.getElementById("moreTopLevelDomainsBtn").addEventListener("click", moreTopLevelDomains);
+
 

@@ -18,6 +18,11 @@
 .styled-table td {
   padding: 12px 15px;
   border-bottom: 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
+}
+
+.styled-table thead:hover {
+  cursor: pointer;
 }
 
 .styled-table tbody tr {
@@ -36,4 +41,43 @@
 .styled-table tbody tr:hover {
   background-color: #d1f0ec;
   cursor: pointer;
+}
+
+.country-details-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.15);
+  padding: 32px 24px 24px 24px;
+  min-width: 320px;
+  z-index: 1000;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.country-details-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.country-details-close {
+  background: #009879;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+img{
+  height: 20px;
+  width: auto;
 }
