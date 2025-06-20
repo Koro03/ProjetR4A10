@@ -84,11 +84,10 @@ function createTd(tr,elementInfo) {
     tr.appendChild(td6)
 }
 
-function renderTable(startItem,numberItem){
-
+function renderTable(startItem,numberItem, data){
     let tbody = document.querySelector("tbody")
     tbody.innerHTML = ""
-    createTr(all_countries.slice(startItem,numberItem))
+    createTr(data.slice(startItem,numberItem))
 }
 
 
@@ -116,7 +115,7 @@ buttonPrev.addEventListener("click",()=>{
     renderTable(startItem,lastItem)
 })
 
-renderTable(startItem,numberItem)
+renderTable(startItem,numberItem, all_countries);
 
 
 

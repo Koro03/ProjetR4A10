@@ -330,50 +330,84 @@ document.querySelectorAll("th").forEach((element) => {
     }
     renderTable(startItem, numberItem,all_countries);
 }*/
+
+let sortState = {
+    column: null,
+    acs: true
+}
+
 function tri(element) {
     let selection = element.innerText;
 
+    // Détermine la colonne à trier
+    let column;
+    switch (selection) {
+        case "Nom en français":
+            column = "name";
+            break;
+        case "Population":
+            column = "population";
+            break;
+        case "Surface":
+            column = "area";
+            break;
+        case "Densité de population":
+            column = "getPopDensity";
+            break;
+        case "Continent et appartenance":
+            column = "subregion";
+            break;
+        default:
+            column = null;
+    }
+    if (!column) return;
+
+    // Inverse le sens si même colonne, sinon tri ascendant
+    if (sortState.column === column) {
+        sortState.asc = !sortState.asc;
+    } else {
+        sortState.column = column;
+        sortState.asc = true;
+    }
+
     // Réinitialiser le style de tous les th
-    let ths = document.querySelectorAll("th");
-    ths.forEach((el) => {
+    document.querySelectorAll("th").forEach((el) => {
         el.style.fontWeight = "normal";
     });
 
-    // On applique le tri sur `filteredCountries`
-    if (selection === "Nom en français") {
-        filteredCountries.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (selection === "Population") {
-        filteredCountries.sort((a, b) => {
-            if (a.population === b.population) {
-                return a.name.localeCompare(b.name);
-            }
-            return a.population - b.population;
-        });
-    } else if (selection === "Surface") {
-        filteredCountries.sort((a, b) => {
-            if (a.area === b.area) {
-                return a.name.localeCompare(b.name);
-            }
-            return a.area - b.area;
-        });
-    } else if (selection === "Densité de population") {
-        filteredCountries.sort((a, b) => {
-            if (a.getPopDensity === b.getPopDensity) {
-                return a.name.localeCompare(b.name);
-            }
-            return a.getPopDensity - b.getPopDensity;
-        });
-    } else if (selection === "Continent et appartenance") {
-        filteredCountries.sort((a, b) => {
-            if (a.subregion === b.subregion) {
-                return a.name.localeCompare(b.name);
-            }
-            return a.subregion.localeCompare(b.subregion);
-        });
-    }
+    // Applique le tri
+    filteredCountries.sort((a, b) => {
+        let valA = typeof a[column] === "function" ? a[column]() : a[column];
+        let valB = typeof b[column] === "function" ? b[column]() : b[column];
 
-    // Mettre à jour le tri actif (optionnel si tu veux t'en servir ailleurs)
-    currentSort = selection;
+        // Gestion des NaN pour les colonnes numériques
+        if (typeof valA === "number" && typeof valB === "number") {
+            const nanA = isNaN(valA);
+            const nanB = isNaN(valB);
+            if (nanA && nanB) return 0;
+            if (nanA) return 1; // Place NaN en bas
+            if (nanB) return -1;
+        }
+
+        if (valA === undefined) valA = "";
+        if (valB === undefined) valB = "";
+
+        if (valA === valB && column !== "name") {
+            // Critère secondaire : nom
+            return sortState.asc
+                ? a.name.localeCompare(b.name)
+                : b.name.localeCompare(a.name);
+        }
+        if (typeof valA === "string") {
+            return sortState.asc
+                ? valA.localeCompare(valB)
+                : valB.localeCompare(valA);
+        } else {
+            return sortState.asc
+                ? valA - valB
+                : valB - valA;
+        }
+    });
 
     // Mettre le titre en gras
     element.style.fontWeight = "900";
