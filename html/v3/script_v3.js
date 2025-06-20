@@ -126,8 +126,7 @@ renderTable(startItem,numberItem, all_countries);
  */
 
 function createCountryDetails(country) {
-    console.log(country);
-    //Supprimer les balise deja présentes
+    //Supprimer les dbalise deja présentes
     document.querySelectorAll('.country-details-modal').forEach(e => e.remove());
     
     

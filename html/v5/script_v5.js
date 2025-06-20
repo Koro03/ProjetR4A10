@@ -1,8 +1,34 @@
 import Country from "../data/class_country.js";
+import Language from "../data/class_language.js";
+
 
 Country.fill_countries()
 
 let all_countries = Country.all_countries;
+let languages = Language.all_languages;
+
+let all_languages = new Set()
+let all_continent = new Set()
+let all_pays = new Set()
+
+languages.forEach(lang => all_languages.add(lang.name))
+all_countries.forEach(element => {
+    all_continent.add(element.subregion)
+});
+
+all_countries.forEach(element => {
+    all_pays.add(element.name)
+});
+
+let filters = {
+    continent: null,
+    language: null,
+    search: ""
+};
+let currentSort = null; 
+
+let filteredCountries = [...all_countries];
+
 
 /**
  * Créer les tr de pays du table
@@ -84,10 +110,11 @@ function createTd(tr,elementInfo) {
     tr.appendChild(td6)
 }
 
-function renderTable(startItem,numberItem){
+function renderTable(startItem,numberItem,data){
+
     let tbody = document.querySelector("tbody")
     tbody.innerHTML = ""
-    createTr(all_countries.slice(startItem,numberItem))
+    createTr(data.slice(startItem,numberItem))
 }
 
 
@@ -102,7 +129,7 @@ buttonNext.addEventListener("click",()=>{
     }
     startItem = startItem + numberItem
     lastItem = lastItem + numberItem
-    renderTable(startItem,lastItem)
+    renderTable(startItem,lastItem,all_countries)
 })
 
 let buttonPrev = document.querySelector("#prev")
@@ -112,10 +139,10 @@ buttonPrev.addEventListener("click",()=>{
     }
     startItem = startItem - numberItem
     lastItem = lastItem - numberItem
-    renderTable(startItem,lastItem)
+    renderTable(startItem,lastItem,all_countries)
 })
 
-renderTable(startItem,numberItem)
+renderTable(startItem,numberItem,all_countries)
 
 
 
@@ -148,7 +175,93 @@ function createCountryDetails(country) {
     closeButton.addEventListener("click", () => div.remove());
     document.body.appendChild(div);
 }
+/**
+ * Fonction d'affichage des pays filtrer par langue
+ * 
+ */
+function createAllLanguageFilter() {
+    const selectLanguageFilter = document.querySelector("#langueFilter");
+    all_languages.forEach(element => {
+        let op = optionForSelect(element);
+        selectLanguageFilter.appendChild(op);
+    });
 
+    selectLanguageFilter.addEventListener("change", () => {
+        const filter = selectLanguageFilter.value;
+        filters.language = filter || null;
+        applyAllFilters();
+    });
+}
+
+/**
+ * Fonction d'affichage des pays filtrer par continent
+ * 
+ */
+function createAllContinent() {
+    const selectContinentFilter = document.querySelector("#continentFilter");
+    all_continent.forEach(element => {
+        let op = optionForSelect(element, element);
+        selectContinentFilter.appendChild(op);
+    });
+
+    selectContinentFilter.addEventListener("change", () => {
+        const filter = selectContinentFilter.value;
+        filters.continent = filter || null;
+        applyAllFilters();
+    });
+}
+
+/**
+ * Fonction d'affichage des pays filtrer par pays
+ * 
+ */
+function createAllPaysFilter() {
+    const selectPaysFilter = document.querySelector("#paysFilter");
+
+    selectPaysFilter.addEventListener("input", () => {
+        const filter = selectPaysFilter.value.trim();
+        filters.search = filter;
+        applyAllFilters();
+    });
+}
+
+/**
+ * Fonction d'affichage des pays avec tous les filtres qui s'appliquent
+ */
+function applyAllFilters() {
+    filteredCountries = all_countries.filter(countrie => {
+        const matchContinent = filters.continent ? countrie.subregion === filters.continent : true;
+        const matchLang = filters.language ? countrie.languages.some(lang => lang.name === filters.language) : true;
+        const matchSearch = filters.search ? countrie.name.toLowerCase().includes(filters.search.toLowerCase()) : true;
+        return matchContinent && matchLang && matchSearch;
+    });
+
+    // Réapplique le tri si déjà sélectionné
+    if (currentSort) {
+        const fakeTh = [...document.querySelectorAll("th")].find(th => th.innerText === currentSort);
+        if (fakeTh) {
+            tri(fakeTh); // réutilise la logique existante
+            return;
+        }
+    }
+
+    startItem = 0;
+    lastItem = numberItem;
+    renderTable(startItem, lastItem, filteredCountries);
+}
+
+
+
+
+function optionForSelect(value) {
+    let option = document.createElement("option");
+    option.value = value
+    option.text = value
+    return option
+}
+createAllLanguageFilter()
+createAllContinent()
+createAllPaysFilter()
 
 /**
  * Ajout d'ecouteur sur les en-tete du tableau
@@ -160,12 +273,16 @@ document.querySelectorAll("th").forEach((element) => {
     });
 });
 
+
+
+
 /**
  * Cette fonction trie le tableau all_countries en fonction du critère sélectionné
  * @param {*} selection // Le critère de tri sélectionné par l'utilisateur
  * @returns all_countries trié
  */
-function tri(element) {
+/*function tri(element) {
+
     let selection = element.innerText;
 
     // Réinitialiser le style de tous les th
@@ -211,5 +328,94 @@ function tri(element) {
         });
         element.style.fontWeight = "900";
     }
-    renderTable(startItem, numberItem);
+    renderTable(startItem, numberItem,all_countries);
+}*/
+
+let sortState = {
+    column: null,
+    acs: true
+}
+
+function tri(element) {
+    let selection = element.innerText;
+
+    // Détermine la colonne à trier
+    let column;
+    switch (selection) {
+        case "Nom en français":
+            column = "name";
+            break;
+        case "Population":
+            column = "population";
+            break;
+        case "Surface":
+            column = "area";
+            break;
+        case "Densité de population":
+            column = "getPopDensity";
+            break;
+        case "Continent et appartenance":
+            column = "subregion";
+            break;
+        default:
+            column = null;
+    }
+    if (!column) return;
+
+    // Inverse le sens si même colonne, sinon tri ascendant
+    if (sortState.column === column) {
+        sortState.asc = !sortState.asc;
+    } else {
+        sortState.column = column;
+        sortState.asc = true;
+    }
+
+    // Réinitialiser le style de tous les th
+    document.querySelectorAll("th").forEach((el) => {
+        el.style.fontWeight = "normal";
+    });
+
+    // Applique le tri
+    filteredCountries.sort((a, b) => {
+        let valA = typeof a[column] === "function" ? a[column]() : a[column];
+        let valB = typeof b[column] === "function" ? b[column]() : b[column];
+
+        // Gestion des NaN pour les colonnes numériques
+        if (typeof valA === "number" && typeof valB === "number") {
+            const nanA = isNaN(valA);
+            const nanB = isNaN(valB);
+            if (nanA && nanB) return 0;
+            if (nanA) return 1; // Place NaN en bas
+            if (nanB) return -1;
+        }
+
+        if (valA === undefined) valA = "";
+        if (valB === undefined) valB = "";
+
+        if (valA === valB && column !== "name") {
+            // Critère secondaire : nom
+            return sortState.asc
+                ? a.name.localeCompare(b.name)
+                : b.name.localeCompare(a.name);
+        }
+        if (typeof valA === "string") {
+            return sortState.asc
+                ? valA.localeCompare(valB)
+                : valB.localeCompare(valA);
+        } else {
+            return sortState.asc
+                ? valA - valB
+                : valB - valA;
+        }
+    });
+
+    // Mettre le titre en gras
+    element.style.fontWeight = "900";
+
+    // Réinitialiser la pagination
+    startItem = 0;
+    lastItem = numberItem;
+
+    // Afficher le tableau trié et filtré
+    renderTable(startItem, lastItem, filteredCountries);
 }
