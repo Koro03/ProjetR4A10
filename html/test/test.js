@@ -71,59 +71,72 @@ function withCommonLanguage() {
     const all_countries = Country.all_countries;
     let tabCommonLanguage = [];
 
-    //parcours de tous les pays
-    all_countries.forEach(element => {
+    all_countries.forEach(country => {
+        const neighbors = country.getBorders;
+        const countryLangCodes = country.getLanguages.map(lang => lang.iso639_2);
 
-        //récupération des pays voisins
-        let border = element.getBorders;
-        //récupération des langues
-        let languages = element.getLanguages;
+        neighbors.forEach(neighbor => {
+            const neighborLangCodes = neighbor.getLanguages.map(lang => lang.iso639_2);
 
-        //pour chaque pays voisins
-        border.forEach(borderCountry => {
-            let borderLanguages = borderCountry.getLanguages;
+            const commonCodes = countryLangCodes.filter(code => neighborLangCodes.includes(code));
 
-            // Vérifier si les deux pays partagent une langue commune
-            let commonLanguages = languages.filter(lang => borderLanguages.includes(lang));
-            if (commonLanguages.length > 0) {
-                tabCommonLanguage.push({
-                    Country1: element,
-                    Country2: borderCountry,
-                    CommonLanguages: languages.filter(lang => borderLanguages.includes(lang))
-                });
+            if (commonCodes.length > 0) {
+                const pairExists = tabCommonLanguage.some(entry => 
+                    (entry.Country1 === neighbor && entry.Country2 === country) ||
+                    (entry.Country1 === country && entry.Country2 === neighbor)
+                );
+
+                if (!pairExists) {
+                    tabCommonLanguage.push({
+                        Country1: country,
+                        Country2: neighbor,
+                        CommonLanguages: country.getLanguages.filter(lang =>
+                            neighborLangCodes.includes(lang.iso639_2)
+                        )
+                    });
+                }
             }
         });
     });
+
     console.log(tabCommonLanguage);
     return tabCommonLanguage;
 }
 
 
 
+
 function withoutCommonCurrency() {
     const all_countries = Country.all_countries;
-    let tabCommonCurrency = [];
+    let tabNoCommonCurrency = [];
 
-    all_countries.forEach(element => {
-        let border = element.getBorders;
-        let elementCurrency = element.getCurrencies;
+    all_countries.forEach(country => {
+        const neighbors = country.getBorders;
+        const currencyCodes = country.getCurrencies.map(curr => curr.code);
 
-        border.forEach(element2 => {
-            let element2Currency = element2.getCurrencies;
-            if (elementCurrency.some(curr => element2.getCurrencies.some(curr2 => curr === curr2))) {
-                if (!tabCommonCurrency.includes(element)) {
-                    tabCommonCurrency.push({
-                        Country1 : element,
-                        Country2 : element2,
-                        CommonCurrency : element.getCurrencies
-                    });
-                }
+        neighbors.forEach(neighbor => {
+            const neighborCurrencyCodes = neighbor.getCurrencies.map(curr => curr.code);
+
+            const hasCommon = currencyCodes.some(code => neighborCurrencyCodes.includes(code));
+
+            const alreadyLogged = tabNoCommonCurrency.some(entry =>
+                (entry.Country1 === neighbor && entry.Country2 === country) ||
+                (entry.Country1 === country && entry.Country2 === neighbor)
+            );
+
+            if (!hasCommon && !alreadyLogged) {
+                tabNoCommonCurrency.push({
+                    Country1: country,
+                    Country2: neighbor
+                });
             }
         });
     });
-    console.log(tabCommonCurrency);
-    return tabCommonCurrency;
+
+    console.log(tabNoCommonCurrency);
+    return tabNoCommonCurrency;
 }
+
 
 
 function sortingDecreasingDensity() {
